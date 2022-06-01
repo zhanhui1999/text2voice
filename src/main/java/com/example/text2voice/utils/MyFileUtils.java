@@ -30,8 +30,7 @@ public class MyFileUtils {
             return object.toString();
         }
 
-        object.put("success",1);
-        object.put("result","文件上传成功");
+
         String[] datas = fileName.split("\\.");
         if(datas[datas.length -1].equals("mp3")){
             object.put("tips","检测到.mp3文件,自动转换为.wav文件");
@@ -45,16 +44,18 @@ public class MyFileUtils {
             trans(source,new File(targetPath));
             source.delete();
         }
+        object.put("success",1);
+        object.put("result","文件上传成功");
         return object.toString();
     }
 
     public static void trans(File source, File target) throws IllegalArgumentException  {
 
         AudioAttributes audio = new AudioAttributes();
-        audio.setCodec("libmp3lame");
-        audio.setBitRate(128000);
-        audio.setChannels(2);
-        audio.setSamplingRate(44100);
+        audio.setCodec("pcm_s16le");
+        audio.setBitRate(256000);
+        audio.setChannels(1);
+        audio.setSamplingRate(16000);
 
         EncodingAttributes attrs = new EncodingAttributes();
         attrs.setOutputFormat("wav");
