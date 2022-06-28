@@ -5,6 +5,7 @@
     <groupId>com.example</groupId>
     <artifactId>text2voice</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
     <name>text2voice</name>
     <description>text2voice</description>
 
@@ -58,12 +59,17 @@
         <dependency>
             <groupId>ws.schild</groupId>
             <artifactId>jave-core</artifactId>
-            <version>3.0.1</version>
+            <version>3.2.0</version>
         </dependency>
         <dependency>
             <groupId>ws.schild</groupId>
             <artifactId>jave-nativebin-win64</artifactId>
-            <version>3.0.1</version>
+            <version>3.2.0</version>
+        </dependency>
+                <dependency>
+            <groupId>ws.schild</groupId>
+            <artifactId>jave-nativebin-linux64</artifactId>
+            <version>3.2.0</version>
         </dependency>
 
 
@@ -125,6 +131,7 @@
                 <version>2.3.7.RELEASE</version>
                 <configuration>
                     <mainClass>com.example.text2voice.Text2voiceApplication</mainClass>
+                    <fork>true</fork>
                 </configuration>
                 <executions>
                     <execution>

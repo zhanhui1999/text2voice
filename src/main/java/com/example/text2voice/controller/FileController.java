@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,17 +35,20 @@ public class FileController {
 
     private final String textDirName= "text";
     private final String audioDirName= "audio";
+
     @PostMapping("/upload/textfile")
     @ResponseBody
     public String uploadTextFile(@RequestParam("files") MultipartFile files){
-        return MyFileUtils.upLoad(files,uploadFilePath +'/'+ textDirName);
+        return MyFileUtils.upLoad(files,uploadFilePath +'/'+ textDirName,1);
     }
+
     @PostMapping("/upload/audiofile")
     @ResponseBody
     public String uploadAudioFile(@RequestParam("files") MultipartFile files){
-        return MyFileUtils.upLoad(files,uploadFilePath +'/'+ audioDirName);
+        return MyFileUtils.upLoad(files,uploadFilePath +'/'+ audioDirName,2);
     }
-    @PostMapping("/list/textfile")
+
+    @GetMapping("/list/textfile")
     @ResponseBody
     public String listTextFile(){
         String path = uploadFilePath + '/' + textDirName;
@@ -54,7 +58,7 @@ public class FileController {
         return ob.toString();
     }
 
-    @PostMapping("/list/audiofile")
+    @GetMapping("/list/audiofile")
     @ResponseBody
     public String listAudioFile(){
         String path = uploadFilePath + '/' + audioDirName;
@@ -90,8 +94,8 @@ public class FileController {
             object.put("status","fail!");
             return object.toString();
         }
-        object.put("resultFileName",resultPath);
-        object.put("status","success!");
+        object.put("resultFileName",textName + "_1_" + audioName + ".wav");
+        // object.put("status","success!");
         return object.toString();
     }
 
@@ -111,7 +115,7 @@ public class FileController {
         response.setContentLength((int) file.length());
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName );
 
-        try(BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));) {
+        try(BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file))) {
             byte[] buff = new byte[1024];
             OutputStream os  = response.getOutputStream();
             int i = 0;

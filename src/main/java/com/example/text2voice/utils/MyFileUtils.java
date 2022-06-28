@@ -14,9 +14,10 @@ import java.io.File;
 
 public class MyFileUtils {
 
-    public static String upLoad(MultipartFile files, String path)  {
+    public static String upLoad(MultipartFile files, String path,Integer tag)  {
         JSONObject object=new JSONObject();
         String fileName = files.getOriginalFilename();  // 文件名
+        System.out.println(path);
         File dest = new File(path +  '/' + fileName);
         if (!dest.getParentFile().exists()) {
             dest.getParentFile().mkdirs();
@@ -30,19 +31,20 @@ public class MyFileUtils {
             return object.toString();
         }
 
-
-        String[] datas = fileName.split("\\.");
-        if(datas[datas.length -1].equals("mp3")){
-            object.put("tips","检测到.mp3文件,自动转换为.wav文件");
-            StringBuilder targetPathBuffer = new StringBuilder();
-            for(int j=0 ;j < datas.length - 1;j++){
-                targetPathBuffer.append(datas[j]);
+        if(tag==2){
+            String[] datas = fileName.split("\\.");
+            if(!datas[datas.length -1].equals("wav")){
+                object.put("tips","检测到非.wav文件,自动转换为.wav文件");
+                StringBuilder targetPathBuffer = new StringBuilder();
+                for(int j=0 ;j < datas.length - 1;j++){
+                    targetPathBuffer.append(datas[j]);
+                }
+                targetPathBuffer.append(".wav");
+                String targetPath = path + '/' + targetPathBuffer;
+                File source = new File(path + '/' + fileName);
+                trans(source,new File(targetPath));
+                source.delete();
             }
-            targetPathBuffer.append(".wav");
-            String targetPath = path + '/' + targetPathBuffer;
-            File source = new File(path + '/' + fileName);
-            trans(source,new File(targetPath));
-            source.delete();
         }
         object.put("success",1);
         object.put("result","文件上传成功");
