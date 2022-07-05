@@ -1,0 +1,3 @@
+[submodule "hadoop-hive-image"]
+	path = hadoop-hive-image
+	url = git@github.com:zhanhui1999/hadoop-hive-image.git
